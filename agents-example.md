@@ -1,6 +1,4 @@
-# Проект: домашний Kubernetes-node на X79/C602 mATX
-
-## Память проекта (обязательна при работе по сборке)
+## Память проекта (обязательна при работе)
 
 В этом workspace есть поисковая память: `mem0-like\memory.md` (документы по одному факту)
 + `mem0-like\search.py` (SQLite FTS5 + векторы multilingual MiniLM-L12-v2).
@@ -27,5 +25,5 @@
 ## Ограничения окружения
 
 - Windows + PowerShell; Python 3.12; node/npm и ollama отсутствуют.
-- Рабочая директория: `C:\Users\Artem\Documents\Strata\Workspace`.
+- Рабочая директория: `C:\Users\USERNAME\Documents\Strata\Workspace`.
 - Память — локальный скрипт, вызывается через shell; автоматического съёма диалога нет.
