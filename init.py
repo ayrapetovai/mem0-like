@@ -25,7 +25,8 @@ VENV = os.path.join(BASE, ".venv")
 VENV_PY = os.path.join(VENV, "Scripts", "python.exe")
 MODELS = os.path.join(BASE, ".models")
 PIP_CACHE = os.path.join(BASE, ".pip-cache")
-MEMORY_MD = os.path.join(BASE, "memory.md")
+DOCS_DIR = os.path.join(BASE, "memory")
+MEMORY_MD = os.path.join(BASE, "memory.md")  # legacy указатель на папку memory\
 SEARCH_PY = os.path.join(BASE, "search.py")
 DB = os.path.join(BASE, "memory.db")
 REPO_DIR = os.path.join(
@@ -34,6 +35,13 @@ REPO_DIR = os.path.join(
 MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 MIN_ONNX = 100 * 1024 * 1024
 MIN_TOKENIZER = 1 * 1024 * 1024
+
+
+def memory_topics():
+    r"""Имена файлов тем: memory\*.md; legacy memory.md считается как тема misc."""
+    if os.path.isdir(DOCS_DIR):
+        return sorted(f[:-3] for f in os.listdir(DOCS_DIR) if f.endswith(".md"))
+    return ["misc"] if os.path.exists(MEMORY_MD) else []
 
 
 def base_python():
@@ -165,8 +173,9 @@ def ensure_model(vpy, check_only, force):
 
 
 def ensure_index(check_only, force):
-    if not os.path.exists(MEMORY_MD):
-        return False, "memory.md отсутствует"
+    topics = memory_topics()
+    if not topics:
+        return False, "memory\\*.md отсутствуют (нет файлов тем)"
     if check_only:
         sys.path.insert(0, BASE)
         import search
@@ -200,7 +209,14 @@ def main():
     force = "--force" in sys.argv
     results = []
 
-    results.append(("memory.md", os.path.exists(MEMORY_MD), "есть" if os.path.exists(MEMORY_MD) else "нет"))
+    topics = memory_topics()
+    results.append(
+        (
+            "memory\\ (темы)",
+            bool(topics),
+            "есть: " + ", ".join(topics) if topics else "нет файлов тем",
+        )
+    )
     results.append(
         ("search.py", os.path.exists(SEARCH_PY), "есть" if os.path.exists(SEARCH_PY) else "нет")
     )
