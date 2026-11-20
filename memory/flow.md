@@ -21,3 +21,5 @@
 ## Поток решений
 
 - Память разложена по темам: mem0-like\memory\hardware.md, game-design.md, flow.md; id документа = topic:номер bullet внутри файла (стабильный); поиск с --topic; memory.md стал указателем и не индексируется
+- PDF из интернета и локальных файлов читается через tools/pdf_text.py на отдельном окружении tools\.venv (pypdf 7.1.0 из tools\requirements.txt): tools\.venv\Scripts\python.exe tools\pdf_text.py <url|путь> --pages N --out FILE; web_fetch не поддерживает application/pdf, поэтому PDF скачивается скриптом и извлекается текст; скан-PDF без текстового слоя требуют OCR
+- Память и инструменты изолированы: mem0-like\.venv содержит только fastembed (pypdf из него удалён), mem0-like\init.py про PDF ничего не знает; окружение инструментов ставится отдельно — tools\.venv\Scripts\python.exe -m pip install -r tools\requirements.txt
